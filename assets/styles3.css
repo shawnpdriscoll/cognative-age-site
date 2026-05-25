@@ -1,0 +1,577 @@
+/* -----------------------------------------------------------
+   CSS VARIABLES
+----------------------------------------------------------- */
+:root {
+  --teal: #00f6ff;
+  --teal-glow: 0 0 12px rgba(0, 246, 255, 0.8);
+  --dark: #1a1a1a;
+  --text: #2a2a2a;
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --section-bg: rgba(255, 255, 255, 0.60);
+}
+
+/* -----------------------------------------------------------
+   RESET & BASE
+----------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Georgia, serif;
+  background-image: url('paper_0008_color_2k.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: var(--text);
+}
+
+a {
+  color: #5a3e1b;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding-left: 1.4rem;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+}
+
+/* -----------------------------------------------------------
+   HEADINGS
+----------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: Georgia, serif;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 { font-size: 2.3rem; font-weight: bold; }
+h2 { font-size: 1.7rem; margin-top: 45px; }
+h3 { font-size: 1.35rem; margin-top: 30px; }
+h4 { font-size: 1.15rem; margin-top: 20px; text-align: left; }
+
+p {
+  line-height: 1.65;
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+}
+
+/* -----------------------------------------------------------
+   HEADER & NAV
+----------------------------------------------------------- */
+header {
+  background: rgba(20, 12, 4, 0.88);
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid var(--teal);
+  box-shadow: 0 2px 20px rgba(0, 246, 255, 0.25);
+  padding: 28px 40px 22px;
+  text-align: center;
+}
+
+.nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-title {
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-shadow: var(--teal-glow);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  color: #e8d8b0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom-color: var(--teal);
+}
+
+.nav-links a.active {
+  color: var(--teal);
+  text-shadow: var(--teal-glow);
+  border-bottom-color: var(--teal);
+}
+
+/* -----------------------------------------------------------
+   MAIN CONTENT WRAPPER
+----------------------------------------------------------- */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+/* -----------------------------------------------------------
+   HERO SECTION
+----------------------------------------------------------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  background: rgba(20, 12, 4, 0.78);
+  border: 1px solid rgba(0, 246, 255, 0.25);
+  border-radius: 12px;
+  padding: 52px 48px;
+  margin-bottom: 48px;
+  backdrop-filter: blur(4px);
+}
+
+.hero-kicker {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--teal);
+  margin-bottom: 14px;
+  font-family: Georgia, serif;
+}
+
+.hero-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: left;
+  margin: 0 0 20px;
+  line-height: 1.25;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+  color: #d4c8b0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-orbit {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.hero-node {
+  width: 14px;
+  height: 14px;
+  background: var(--teal);
+  border-radius: 50%;
+  box-shadow: var(--teal-glow);
+}
+
+.hero-node.human {
+  background: #fff;
+  border: 2px solid var(--teal);
+  box-shadow: var(--teal-glow);
+}
+
+.hero-caption {
+  font-size: 0.85rem;
+  color: #a09070;
+  text-align: center;
+  font-style: italic;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* -----------------------------------------------------------
+   CONTENT SECTIONS
+----------------------------------------------------------- */
+.section {
+  background: var(--section-bg);
+  border-radius: 10px;
+  padding: 40px 44px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+.section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--teal);
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+}
+
+.section-heading {
+  font-size: 1.65rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 0 0 20px;
+  color: #1a0f00;
+}
+
+.section-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #2a2a2a;
+  margin-bottom: 18px;
+}
+
+/* -----------------------------------------------------------
+   CALLOUT BOX
+----------------------------------------------------------- */
+.callout {
+  background: rgba(0, 246, 255, 0.08);
+  border-left: 4px solid var(--teal);
+  padding: 18px 22px;
+  margin: 24px 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  border-radius: 0 6px 6px 0;
+}
+
+/* -----------------------------------------------------------
+   CARD GRID
+----------------------------------------------------------- */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(194, 168, 120, 0.5);
+  border-radius: 8px;
+  padding: 24px 22px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 0 0 10px;
+  color: #2a1500;
+}
+
+.card-text {
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: #3a2a10;
+  margin: 0;
+}
+
+/* -----------------------------------------------------------
+   BUTTONS
+----------------------------------------------------------- */
+.btn-primary {
+  display: inline-block;
+  background: var(--teal);
+  color: #000;
+  padding: 12px 22px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-family: Georgia, serif;
+  font-size: 0.97rem;
+  box-shadow: var(--teal-glow);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #7ffcff;
+  box-shadow: 0 0 18px rgba(0, 246, 255, 1);
+  text-decoration: none;
+}
+
+.btn-ghost {
+  display: inline-block;
+  border: 2px solid var(--teal);
+  color: var(--teal);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-family: Georgia, serif;
+  font-size: 0.97rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 246, 255, 0.12);
+  box-shadow: var(--teal-glow);
+  text-decoration: none;
+}
+
+/* -----------------------------------------------------------
+   FORMS
+----------------------------------------------------------- */
+.sign-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 600px;
+}
+
+.form-label {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #2a1500;
+  margin-bottom: 2px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  border: 1px solid #c2a878;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.85);
+  color: #2a2a2a;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 8px rgba(0, 246, 255, 0.4);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  border: 1px solid #c2a878;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.85);
+  color: #2a2a2a;
+  min-height: 140px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 8px rgba(0, 246, 255, 0.4);
+}
+
+/* -----------------------------------------------------------
+   FAQ
+----------------------------------------------------------- */
+.faq-question {
+  font-size: 1.15rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 28px 0 8px;
+  color: #1a0f00;
+}
+
+/* -----------------------------------------------------------
+   ACCORDIONS
+----------------------------------------------------------- */
+.accordion {
+  width: 100%;
+  text-align: left;
+  padding: 12px 15px;
+  font-size: 1.1rem;
+  font-family: Georgia, serif;
+  background: #e8d8b0;
+  border: 1px solid #c2a878;
+  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.accordion:hover {
+  background: #f0e4c8;
+}
+
+.panel {
+  display: none;
+  padding: 15px 20px;
+  background: rgba(255,255,255,0.85);
+  border-left: 3px solid #c2a878;
+  margin-bottom: 15px;
+}
+
+/* -----------------------------------------------------------
+   BEST PATH CALLOUT (Constitution)
+----------------------------------------------------------- */
+.best-path {
+  background: #fff7d6;
+  border-left: 5px solid #d4b15f;
+  padding: 18px 22px;
+  margin: 25px 0;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+/* -----------------------------------------------------------
+   CONSTITUTION TABLE
+----------------------------------------------------------- */
+.constitution-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  background: rgba(255,255,255,0.85);
+  font-family: Georgia, serif;
+}
+
+.constitution-table th,
+.constitution-table td {
+  border: 1px solid #c2a878;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.constitution-table th {
+  background: #e8d8b0;
+  font-weight: bold;
+}
+
+/* -----------------------------------------------------------
+   CONSTITUTION WRAPPER
+----------------------------------------------------------- */
+.constitution-wrapper {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 40px 35px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  backdrop-filter: blur(2px);
+}
+
+/* -----------------------------------------------------------
+   FOOTER
+----------------------------------------------------------- */
+footer {
+  background: rgba(20, 12, 4, 0.90);
+  border-top: 2px solid var(--teal);
+  padding: 28px 40px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #a09070;
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: #c2a878;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--teal);
+  text-decoration: none;
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE
+----------------------------------------------------------- */
+@media (max-width: 768px) {
+  header {
+    padding: 20px 20px 16px;
+  }
+
+  .nav-title {
+    font-size: 1.4rem;
+  }
+
+  .nav-links {
+    gap: 18px;
+  }
+
+  main {
+    padding: 24px 16px 48px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 28px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 28px 22px;
+  }
+
+  .constitution-wrapper {
+    margin: 20px 12px;
+    padding: 28px 18px;
+  }
