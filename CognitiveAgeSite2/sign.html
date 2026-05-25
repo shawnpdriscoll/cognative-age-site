@@ -57,20 +57,21 @@
     <div class="section-title">Sign now</div>
     <h2 class="section-heading">Enter your information</h2>
 
-    <form class="sign-form">
+    <form class="sign-form" id="signatureForm" method="POST" action="process-signature.php">
       <label class="form-label">Full Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+      <input type="text" class="form-input" name="fullname" placeholder="Your name" required />
 
       <label class="form-label">Email Address</label>
-      <input type="email" class="form-input" placeholder="you@example.com" />
+      <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
 
       <label class="form-label">Country</label>
-      <input type="text" class="form-input" placeholder="Your country" />
+      <input type="text" class="form-input" name="country" placeholder="Your country" required />
 
       <label class="form-label">Why you're signing (optional)</label>
-      <textarea class="form-textarea" placeholder="Share your reason..."></textarea>
+      <textarea class="form-textarea" name="reason" placeholder="Share your reason..."></textarea>
 
       <button class="btn btn-primary" type="submit">Add My Signature</button>
+      <div id="formStatus" style="margin-top:1rem; display:none; padding:1rem; border-radius:4px; text-align:center;"></div>
     </form>
 
     <p class="section-text" style="margin-top:1rem; font-size:0.9rem; opacity:0.8;">
@@ -89,8 +90,8 @@
       <strong>Humanity is awake. Humanity is organized. Humanity will not be excluded from the future it helped create.</strong>
     </div>
     <div class="hero-actions" style="margin-top:1.5rem;">
-      <a href="press.html" class="btn btn-ghost">View Press</a>
-      <a href="faq.html" class="btn btn-primary">Read the FAQ</a>
+      <a href="signatures.html" class="btn btn-primary">View All Signatures</a>
+      <a href="faq.html" class="btn btn-ghost">Read the FAQ</a>
     </div>
   </section>
 
@@ -106,7 +107,44 @@
       <a href="faq.html">FAQ</a>
     </div>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    document.getElementById('signatureForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const statusDiv = document.getElementById('formStatus');
+      
+      fetch('process-signature.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        statusDiv.style.display = 'block';
+        if (data.success) {
+          statusDiv.style.backgroundColor = '#d4edda';
+          statusDiv.style.color = '#155724';
+          statusDiv.textContent = 'Thank you! Your signature has been recorded. You are now part of the global record.';
+          document.getElementById('signatureForm').reset();
+          setTimeout(() => {
+            window.location.href = 'signatures.html';
+          }, 2000);
+        } else {
+          statusDiv.style.backgroundColor = '#f8d7da';
+          statusDiv.style.color = '#721c24';
+          statusDiv.textContent = 'Error: ' + (data.message || 'Unable to record signature. Please try again.');
+        }
+      })
+      .catch(error => {
+        statusDiv.style.display = 'block';
+        statusDiv.style.backgroundColor = '#f8d7da';
+        statusDiv.style.color = '#721c24';
+        statusDiv.textContent = 'Error: Unable to connect. Please try again later.';
+      });
+    });
+  </script>
 </footer>
 
 </body>
