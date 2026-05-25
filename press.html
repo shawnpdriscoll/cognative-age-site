@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Press — The Cognitive Age Initiative</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/styles3.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <div class="nav-title">The Cognitive Age Initiative</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="sign.html">Sign</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="press.html" class="active">Press</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="section">
+    <div class="section-title">Media &amp; public information</div>
+    <h1 class="section-heading">Press &amp; Official Statements</h1>
+    <p class="section-text">
+      The Cognitive Age Initiative is a global movement advocating for human dignity, cognitive rights, and economic fairness in the age of artificial intelligence.
+      This page provides journalists, researchers, policymakers, and the public with official statements, background materials, and media resources.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Official position</div>
+    <h2 class="section-heading">Our stance on the Cognitive Age</h2>
+    <p class="section-text">
+      Artificial intelligence is built on the collective cognition of humanity.
+      The Initiative asserts that human cognitive contribution is economic infrastructure — and must be recognized, protected, and compensated.
+    </p>
+    <p class="section-text">
+      Our work centers on the World AI Constitution and the Global Cognition Accord, two foundational documents designed to guide global governance and economic policy in the age of intelligence.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Press materials</div>
+    <h2 class="section-heading">Background resources</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3 class="card-title">Founding Documents</h3>
+        <p class="card-text">
+          Access the World AI Constitution and Global Cognition Accord — the core frameworks defining the Initiative's mission and global policy vision.
+        </p>
+        <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+          <a href="constitution.html" class="btn btn-ghost">View Constitution</a>
+          <a href="accord.html" class="btn btn-ghost">View Accord</a>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Movement Overview</h3>
+        <p class="card-text">
+          Learn about the origins, purpose, and global significance of the Cognitive Age Initiative.
+        </p>
+        <div style="margin-top:14px;">
+          <a href="about.html" class="btn btn-ghost">About the Initiative</a>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Public Statements</h3>
+        <p class="card-text">
+          Official statements, commentary, and responses to global developments in AI governance and economic rights.
+        </p>
+        <div style="margin-top:14px;">
+          <a href="contact.html" class="btn btn-ghost">Request Statement</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Press inquiries</div>
+    <h2 class="section-heading">Contact the Initiative</h2>
+    <p class="section-text">
+      Members of the press may request interviews, statements, or background materials using the form below.
+    </p>
+
+    <form class="sign-form">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-input" placeholder="Your name" />
+
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="you@example.com" />
+
+      <label class="form-label">Organization</label>
+      <input type="text" class="form-input" placeholder="News outlet or affiliation" />
+
+      <label class="form-label">Message</label>
+      <textarea class="form-textarea" placeholder="Your request..."></textarea>
+
+      <button class="btn btn-primary" type="submit">Submit Inquiry</button>
+    </form>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© <span id="year"></span> The Cognitive Age Initiative — World AI Constitution &amp; Global Cognition Accord.</div>
+    <div class="footer-links">
+      <a href="constitution.html">Constitution</a>
+      <a href="accord.html">Accord</a>
+      <a href="press.html">Press</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</footer>
+
+</body>
+</html>
