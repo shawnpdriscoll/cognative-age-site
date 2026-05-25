@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Global Signatures — The Cognitive Age Initiative</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/styles3.css">
+  <style>
+    .signatures-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .signature-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .signature-item {
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.85);
+      border-left: 4px solid #d4b15f;
+      border-radius: 4px;
+    }
+    
+    .signature-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+    
+    .signature-country {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+    }
+    
+    .signature-date {
+      font-size: 0.85rem;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    
+    .signature-reason {
+      font-style: italic;
+      color: #555;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-box {
+      background: #fff7d6;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #d4b15f;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #d4b15f;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 5px;
+    }
+    
+    .filter-controls {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .filter-input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: Georgia, serif;
+    }
+    
+    .no-signatures {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <div class="nav-title">The Cognitive Age Initiative</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="sign.html">Sign</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="press.html">Press</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="section">
+    <div class="section-title">Global archive</div>
+    <h1 class="section-heading">World Signatures — The Record of Commitment</h1>
+    <p class="section-text">
+      Below is the growing global archive of individuals who have signed the World AI Constitution and Global Cognition Accord.
+      Each signature represents a commitment to human dignity, cognitive rights, and economic fairness in the age of artificial intelligence.
+    </p>
+  </section>
+
+  <section class="section signatures-container">
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-label">Global Signatures</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="countryCount">0</div>
+        <div class="stat-label">Countries Represented</div>
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <input type="text" id="filterName" class="filter-input" placeholder="Search by name...">
+      <input type="text" id="filterCountry" class="filter-input" placeholder="Filter by country...">
+      <button id="resetFilter" class="btn btn-ghost" style="padding: 8px 15px;">Reset</button>
+    </div>
+
+    <div id="signaturesList" class="signature-list">
+      <div class="no-signatures">Loading signatures...</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Join the movement</div>
+    <h2 class="section-heading">Add your voice</h2>
+    <p class="section-text">
+      Your signature matters. Every name added to this record strengthens our collective commitment to building a future where humanity remains at the center.
+    </p>
+    <div class="hero-actions">
+      <a href="sign.html" class="btn btn-primary">Sign Now</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© <span id="year"></span> The Cognitive Age Initiative — World AI Constitution &amp; Global Cognition Accord.</div>
+    <div class="footer-links">
+      <a href="constitution.html">Constitution</a>
+      <a href="accord.html">Accord</a>
+      <a href="press.html">Press</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    let allSignatures = [];
+    
+    // Load signatures
+    function loadSignatures() {
+      fetch('get-signatures.php')
+        .then(response => response.json())
+        .then(data => {
+          allSignatures = data;
+          displaySignatures(data);
+          updateStats(data);
+        })
+        .catch(error => {
+          console.error('Error loading signatures:', error);
+          document.getElementById('signaturesList').innerHTML = '<div class="no-signatures">Unable to load signatures.</div>';
+        });
+    }
+    
+    function displaySignatures(signatures) {
+      const container = document.getElementById('signaturesList');
+      
+      if (signatures.length === 0) {
+        container.innerHTML = '<div class="no-signatures">Be the first to sign the World AI Constitution and Global Cognition Accord. <a href="sign.html">Sign now.</a></div>';
+        return;
+      }
+      
+      container.innerHTML = signatures.map(sig => `
+        <div class="signature-item">
+          <div class="signature-name">${escapeHtml(sig.fullname)}</div>
+          <div class="signature-country">📍 ${escapeHtml(sig.country)}</div>
+          <div class="signature-date">${new Date(sig.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+          ${sig.reason ? `<div class="signature-reason">"${escapeHtml(sig.reason)}"</div>` : ''}
+        </div>
+      `).join('');
+    }
+    
+    function updateStats(signatures) {
+      document.getElementById('totalCount').textContent = signatures.length;
+      
+      const countries = new Set(signatures.map(s => s.country));
+      document.getElementById('countryCount').textContent = countries.size;
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // Filter functionality
+    document.getElementById('filterName').addEventListener('input', function() {
+      const name = this.value.toLowerCase();
+      const country = document.getElementById('filterCountry').value.toLowerCase();
+      
+      const filtered = allSignatures.filter(sig => 
+        sig.fullname.toLowerCase().includes(name) && 
+        sig.country.toLowerCase().includes(country)
+      );
+      
+      displaySignatures(filtered);
+    });
+    
+    document.getElementById('filterCountry').addEventListener('input', function() {
+      const country = this.value.toLowerCase();
+      const name = document.getElementById('filterName').value.toLowerCase();
+      
+      const filtered = allSignatures.filter(sig => 
+        sig.fullname.toLowerCase().includes(name) && 
+        sig.country.toLowerCase().includes(country)
+      );
+      
+      displaySignatures(filtered);
+    });
+    
+    document.getElementById('resetFilter').addEventListener('click', function() {
+      document.getElementById('filterName').value = '';
+      document.getElementById('filterCountry').value = '';
+      displaySignatures(allSignatures);
+    });
+    
+    // Initial load
+    loadSignatures();
+  </script>
+</footer>
+
+</body>
+</html>
