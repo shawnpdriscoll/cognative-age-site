@@ -87,20 +87,21 @@
       Members of the press may request interviews, statements, or background materials using the form below.
     </p>
 
-    <form class="sign-form">
+    <form class="sign-form" id="pressForm" method="POST" action="process-contact.php">
       <label class="form-label">Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+      <input type="text" class="form-input" name="name" placeholder="Your name" required />
 
       <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="you@example.com" />
+      <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
 
       <label class="form-label">Organization</label>
-      <input type="text" class="form-input" placeholder="News outlet or affiliation" />
+      <input type="text" class="form-input" name="organization" placeholder="News outlet or affiliation" />
 
       <label class="form-label">Message</label>
-      <textarea class="form-textarea" placeholder="Your request..."></textarea>
+      <textarea class="form-textarea" name="message" placeholder="Your request..." required></textarea>
 
       <button class="btn btn-primary" type="submit">Submit Inquiry</button>
+      <div id="formStatus" style="margin-top:1rem; display:none; padding:1rem; border-radius:4px; text-align:center;"></div>
     </form>
   </section>
 
@@ -116,7 +117,41 @@
       <a href="faq.html">FAQ</a>
     </div>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    document.getElementById('pressForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const statusDiv = document.getElementById('formStatus');
+      
+      fetch('process-contact.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        statusDiv.style.display = 'block';
+        if (data.success) {
+          statusDiv.style.backgroundColor = '#d4edda';
+          statusDiv.style.color = '#155724';
+          statusDiv.textContent = 'Thank you! Your inquiry has been submitted successfully.';
+          document.getElementById('pressForm').reset();
+        } else {
+          statusDiv.style.backgroundColor = '#f8d7da';
+          statusDiv.style.color = '#721c24';
+          statusDiv.textContent = 'Error: ' + (data.message || 'Unable to submit inquiry. Please try again.');
+        }
+      })
+      .catch(error => {
+        statusDiv.style.display = 'block';
+        statusDiv.style.backgroundColor = '#f8d7da';
+        statusDiv.style.color = '#721c24';
+        statusDiv.textContent = 'Error: Unable to connect. Please try again later.';
+      });
+    });
+  </script>
 </footer>
 
 </body>
