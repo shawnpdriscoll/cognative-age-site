@@ -27,35 +27,32 @@
   <section class="section">
     <div class="section-title">Get in touch</div>
     <h1 class="section-heading">Contact the Cognitive Age Initiative</h1>
-    <p class="section-text">
-      Whether you're a journalist, policymaker, researcher, supporter, or simply someone who wants to understand the movement more deeply, we welcome your questions and inquiries.
-    </p>
-    <p class="section-text">
-      Use the form below to reach out. A member of the Initiative will review your message and respond as soon as possible.
-    </p>
+    <p class="section-text">Whether you're a journalist, policymaker, researcher, supporter, or simply someone who wants to understand the movement more deeply, we welcome your questions and inquiries.</p>
+    <p class="section-text">Use the form below to reach out. A member of the Initiative will review your message and respond as soon as possible.</p>
   </section>
 
   <section class="section">
     <div class="section-title">Send a message</div>
     <h2 class="section-heading">Contact Form</h2>
 
-    <form class="sign-form">
+    <form class="sign-form" id="contactForm">
       <label class="form-label">Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+      <input type="text" class="form-input" name="name" placeholder="Your name" required />
 
       <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="you@example.com" />
+      <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
 
       <label class="form-label">Subject</label>
-      <input type="text" class="form-input" placeholder="Reason for contacting" />
+      <input type="text" class="form-input" name="subject" placeholder="Reason for contacting" required />
 
       <label class="form-label">Message</label>
-      <textarea class="form-textarea" placeholder="Your message..."></textarea>
+      <textarea class="form-textarea" name="message" placeholder="Your message..." required></textarea>
 
       <button class="btn btn-primary" type="submit">Send Message</button>
+      <div id="formStatus" style="margin-top:1rem; display:none; padding:1rem; border-radius:6px; text-align:center; border:1px solid transparent;"></div>
     </form>
 
-    <p class="section-text" style="margin-top:1rem; font-size:0.9rem; opacity:0.8;">
+    <p class="section-text" style="margin-top:1rem; font-size:0.9rem; opacity:0.75;">
       Your information is used solely for communication with the Initiative and will never be shared or sold.
     </p>
   </section>
@@ -81,8 +78,50 @@
       <a href="faq.html">FAQ</a>
     </div>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
 
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type=submit]');
+    const statusDiv = document.getElementById('formStatus');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch('process-contact.php', { method:'POST', body: new FormData(this) })
+    .then(r => r.json())
+    .then(data => {
+      statusDiv.style.display = 'block';
+      if (data.success) {
+        statusDiv.style.background = 'rgba(0,246,255,0.08)';
+        statusDiv.style.borderColor = 'var(--teal)';
+        statusDiv.style.color = '#005a5a';
+        statusDiv.textContent = '✓ Thank you! Your message has been sent. We will respond as soon as possible.';
+        this.reset();
+        btn.textContent = 'Sent';
+      } else {
+        statusDiv.style.background = 'rgba(255,80,80,0.08)';
+        statusDiv.style.borderColor = '#c05050';
+        statusDiv.style.color = '#8b0000';
+        statusDiv.textContent = 'Error: ' + (data.message || 'Unable to send. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
+    })
+    .catch(() => {
+      statusDiv.style.display = 'block';
+      statusDiv.style.background = 'rgba(255,80,80,0.08)';
+      statusDiv.style.borderColor = '#c05050';
+      statusDiv.style.color = '#8b0000';
+      statusDiv.textContent = 'Connection error. Please check your internet and try again.';
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    });
+  });
+</script>
 </body>
+</html>
+
 </html>
