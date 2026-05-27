@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Global Signatures — The Cognitive Age Initiative</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="assets/styles3.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <div class="nav-title">The Cognitive Age Initiative</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="sign.html">Sign</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="press.html">Press</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="section">
+    <div class="section-title">Global archive</div>
+    <h1 class="section-heading">World Signatures — The Record of Commitment</h1>
+    <p class="section-text">
+      Below is the growing global archive of individuals who have signed the World AI Constitution and Global Cognition Accord.
+      Each signature represents a commitment to human dignity, cognitive rights, and economic fairness in the age of artificial intelligence.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-number" id="totalCount">—</div>
+        <div class="stat-label">Global Signatures</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="countryCount">—</div>
+        <div class="stat-label">Countries Represented</div>
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <input type="text" id="filterName"    class="filter-input" placeholder="Search by name…">
+      <input type="text" id="filterCountry" class="filter-input" placeholder="Filter by country…">
+      <button id="resetFilter" class="btn btn-ghost" style="padding:7px 16px; font-size:0.88rem;">Reset</button>
+    </div>
+
+    <div id="signaturesList" class="signature-list">
+      <div class="no-signatures">Loading signatures…</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">Join the movement</div>
+    <h2 class="section-heading">Add your voice</h2>
+    <p class="section-text">Your signature matters. Every name added strengthens our collective commitment to building a future where humanity remains at the center.</p>
+    <div class="hero-actions">
+      <a href="sign.html" class="btn btn-primary">Sign Now</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© <span id="year"></span> The Cognitive Age Initiative — World AI Constitution &amp; Global Cognition Accord.</div>
+    <div class="footer-links">
+      <a href="constitution.html">Constitution</a>
+      <a href="accord.html">Accord</a>
+      <a href="press.html">Press</a>
+      <a href="faq.html">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  let allSignatures = [];
+
+  function escapeHtml(text) {
+    const d = document.createElement('div');
+    d.textContent = text || '';
+    return d.innerHTML;
+  }
+
+  function formatDate(ts) {
+    try {
+      return new Date(ts).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    } catch(e) { return ts; }
+  }
+
+  function displaySignatures(list) {
+    const container = document.getElementById('signaturesList');
+    if (!list.length) {
+      container.innerHTML = '<div class="no-signatures">No signatures found. <a href="sign.html">Be the first to sign.</a></div>';
+      return;
+    }
+    container.innerHTML = list.map(sig => `
+      <div class="signature-item">
+        <div class="signature-name">${escapeHtml(sig.fullname)}</div>
+        <div class="signature-country">📍 ${escapeHtml(sig.country)}</div>
+        <div class="signature-date">${formatDate(sig.timestamp)}</div>
+        ${sig.reason ? `<div class="signature-reason">"${escapeHtml(sig.reason)}"</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function updateStats(list) {
+    document.getElementById('totalCount').textContent = list.length;
+    document.getElementById('countryCount').textContent = new Set(list.map(s => s.country)).size;
+  }
+
+  function applyFilters() {
+    const name    = document.getElementById('filterName').value.toLowerCase();
+    const country = document.getElementById('filterCountry').value.toLowerCase();
+    const filtered = allSignatures.filter(s =>
+      s.fullname.toLowerCase().includes(name) &&
+      s.country.toLowerCase().includes(country)
+    );
+    displaySignatures(filtered);
+  }
+
+  document.getElementById('filterName').addEventListener('input', applyFilters);
+  document.getElementById('filterCountry').addEventListener('input', applyFilters);
+  document.getElementById('resetFilter').addEventListener('click', function() {
+    document.getElementById('filterName').value = '';
+    document.getElementById('filterCountry').value = '';
+    displaySignatures(allSignatures);
+  });
+
+  // Load signatures
+  fetch('get-signatures.php')
+    .then(r => r.json())
+    .then(data => {
+      allSignatures = data;
+      displaySignatures(data);
+      updateStats(data);
+    })
+    .catch(() => {
+      document.getElementById('signaturesList').innerHTML =
+        '<div class="no-signatures">Unable to load signatures. Please try refreshing the page.</div>';
+    });
+</script>
+
+</body>
+</html>
