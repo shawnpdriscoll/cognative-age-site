@@ -27,22 +27,14 @@
   <section class="section">
     <div class="section-title">Media &amp; public information</div>
     <h1 class="section-heading">Press &amp; Official Statements</h1>
-    <p class="section-text">
-      The Cognitive Age Initiative is a global movement advocating for human dignity, cognitive rights, and economic fairness in the age of artificial intelligence.
-      This page provides journalists, researchers, policymakers, and the public with official statements, background materials, and media resources.
-    </p>
+    <p class="section-text">The Cognitive Age Initiative is a global movement advocating for human dignity, cognitive rights, and economic fairness in the age of artificial intelligence. This page provides journalists, researchers, policymakers, and the public with official statements, background materials, and media resources.</p>
   </section>
 
   <section class="section">
     <div class="section-title">Official position</div>
     <h2 class="section-heading">Our stance on the Cognitive Age</h2>
-    <p class="section-text">
-      Artificial intelligence is built on the collective cognition of humanity.
-      The Initiative asserts that human cognitive contribution is economic infrastructure — and must be recognized, protected, and compensated.
-    </p>
-    <p class="section-text">
-      Our work centers on the World AI Constitution and the Global Cognition Accord, two foundational documents designed to guide global governance and economic policy in the age of intelligence.
-    </p>
+    <p class="section-text">Artificial intelligence is built on the collective cognition of humanity. The Initiative asserts that human cognitive contribution is economic infrastructure — and must be recognized, protected, and compensated.</p>
+    <p class="section-text">Our work centers on the World AI Constitution and the Global Cognition Accord, two foundational documents designed to guide global governance and economic policy in the age of intelligence.</p>
   </section>
 
   <section class="section">
@@ -51,9 +43,7 @@
     <div class="grid-3">
       <div class="card">
         <h3 class="card-title">Founding Documents</h3>
-        <p class="card-text">
-          Access the World AI Constitution and Global Cognition Accord — the core frameworks defining the Initiative's mission and global policy vision.
-        </p>
+        <p class="card-text">Access the World AI Constitution and Global Cognition Accord — the core frameworks defining the Initiative's mission and global policy vision.</p>
         <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
           <a href="constitution.html" class="btn btn-ghost">View Constitution</a>
           <a href="accord.html" class="btn btn-ghost">View Accord</a>
@@ -61,18 +51,14 @@
       </div>
       <div class="card">
         <h3 class="card-title">Movement Overview</h3>
-        <p class="card-text">
-          Learn about the origins, purpose, and global significance of the Cognitive Age Initiative.
-        </p>
+        <p class="card-text">Learn about the origins, purpose, and global significance of the Cognitive Age Initiative.</p>
         <div style="margin-top:14px;">
           <a href="about.html" class="btn btn-ghost">About the Initiative</a>
         </div>
       </div>
       <div class="card">
         <h3 class="card-title">Public Statements</h3>
-        <p class="card-text">
-          Official statements, commentary, and responses to global developments in AI governance and economic rights.
-        </p>
+        <p class="card-text">Official statements, commentary, and responses to global developments in AI governance and economic rights.</p>
         <div style="margin-top:14px;">
           <a href="contact.html" class="btn btn-ghost">Request Statement</a>
         </div>
@@ -83,24 +69,23 @@
   <section class="section">
     <div class="section-title">Press inquiries</div>
     <h2 class="section-heading">Contact the Initiative</h2>
-    <p class="section-text">
-      Members of the press may request interviews, statements, or background materials using the form below.
-    </p>
+    <p class="section-text">Members of the press may request interviews, statements, or background materials using the form below.</p>
 
-    <form class="sign-form">
+    <form class="sign-form" id="pressForm">
       <label class="form-label">Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+      <input type="text" class="form-input" name="name" placeholder="Your name" required />
 
       <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="you@example.com" />
+      <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
 
       <label class="form-label">Organization</label>
-      <input type="text" class="form-input" placeholder="News outlet or affiliation" />
+      <input type="text" class="form-input" name="organization" placeholder="News outlet or affiliation" />
 
       <label class="form-label">Message</label>
-      <textarea class="form-textarea" placeholder="Your request..."></textarea>
+      <textarea class="form-textarea" name="message" placeholder="Your request..." required></textarea>
 
       <button class="btn btn-primary" type="submit">Submit Inquiry</button>
+      <div id="formStatus" style="margin-top:1rem; display:none; padding:1rem; border-radius:6px; text-align:center; border:1px solid transparent;"></div>
     </form>
   </section>
 
@@ -116,8 +101,48 @@
       <a href="faq.html">FAQ</a>
     </div>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
 
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('pressForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type=submit]');
+    const statusDiv = document.getElementById('formStatus');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    fetch('process-contact.php', { method:'POST', body: new FormData(this) })
+    .then(r => r.json())
+    .then(data => {
+      statusDiv.style.display = 'block';
+      if (data.success) {
+        statusDiv.style.background = 'rgba(0,246,255,0.08)';
+        statusDiv.style.borderColor = 'var(--teal)';
+        statusDiv.style.color = '#005a5a';
+        statusDiv.textContent = '✓ Thank you! Your press inquiry has been submitted. We will be in touch soon.';
+        this.reset();
+        btn.textContent = 'Sent';
+      } else {
+        statusDiv.style.background = 'rgba(255,80,80,0.08)';
+        statusDiv.style.borderColor = '#c05050';
+        statusDiv.style.color = '#8b0000';
+        statusDiv.textContent = 'Error: ' + (data.message || 'Unable to submit. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Submit Inquiry';
+      }
+    })
+    .catch(() => {
+      statusDiv.style.display = 'block';
+      statusDiv.style.background = 'rgba(255,80,80,0.08)';
+      statusDiv.style.borderColor = '#c05050';
+      statusDiv.style.color = '#8b0000';
+      statusDiv.textContent = 'Connection error. Please check your internet and try again.';
+      btn.disabled = false;
+      btn.textContent = 'Submit Inquiry';
+    });
+  });
+</script>
 </body>
 </html>
