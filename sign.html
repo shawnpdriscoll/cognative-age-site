@@ -27,13 +27,8 @@
   <section class="section">
     <div class="section-title">A moment of commitment</div>
     <h1 class="section-heading">Sign the World AI Constitution &amp; Global Cognition Accord</h1>
-    <p class="section-text">
-      Signing this document is more than adding your name to a list.
-      It is a declaration that you believe human dignity, cognitive rights, and economic fairness must define the age of intelligence.
-    </p>
-    <p class="section-text">
-      This is a ceremonial act — a moment where individuals across the world stand together and affirm that the future must be built with humanity at the center.
-    </p>
+    <p class="section-text">Signing this document is more than adding your name to a list. It is a declaration that you believe human dignity, cognitive rights, and economic fairness must define the age of intelligence.</p>
+    <p class="section-text">This is a ceremonial act — a moment where individuals across the world stand together and affirm that the future must be built with humanity at the center.</p>
   </section>
 
   <section class="section">
@@ -47,33 +42,31 @@
       <li>The creation of a global economic floor funded by AI revenue.</li>
       <li>The equitable distribution of AI‑driven prosperity.</li>
     </ul>
-    <p class="section-text">
-      Your signature becomes part of a growing global archive — a record of the people who stood up at the dawn of the Cognitive Age and said:
-      <strong>"Humanity must not be left behind."</strong>
-    </p>
+    <p class="section-text">Your signature becomes part of a growing global archive — a record of the people who stood up at the dawn of the Cognitive Age and said: <strong>"Humanity must not be left behind."</strong></p>
   </section>
 
   <section class="section">
     <div class="section-title">Sign now</div>
     <h2 class="section-heading">Enter your information</h2>
 
-    <form class="sign-form">
+    <form class="sign-form" id="signatureForm">
       <label class="form-label">Full Name</label>
-      <input type="text" class="form-input" placeholder="Your name" />
+      <input type="text" class="form-input" name="fullname" placeholder="Your name" required />
 
       <label class="form-label">Email Address</label>
-      <input type="email" class="form-input" placeholder="you@example.com" />
+      <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
 
       <label class="form-label">Country</label>
-      <input type="text" class="form-input" placeholder="Your country" />
+      <input type="text" class="form-input" name="country" placeholder="Your country" required />
 
       <label class="form-label">Why you're signing (optional)</label>
-      <textarea class="form-textarea" placeholder="Share your reason..."></textarea>
+      <textarea class="form-textarea" name="reason" placeholder="Share your reason..."></textarea>
 
       <button class="btn btn-primary" type="submit">Add My Signature</button>
+      <div id="formStatus" style="margin-top:1rem; display:none; padding:1rem; border-radius:6px; text-align:center; border: 1px solid transparent;"></div>
     </form>
 
-    <p class="section-text" style="margin-top:1rem; font-size:0.9rem; opacity:0.8;">
+    <p class="section-text" style="margin-top:1rem; font-size:0.9rem; opacity:0.75;">
       Your information is used solely for the public record of signatories and will never be sold or shared with third parties.
     </p>
   </section>
@@ -81,16 +74,13 @@
   <section class="section">
     <div class="section-title">A global declaration</div>
     <h2 class="section-heading">Your signature is part of history</h2>
-    <p class="section-text">
-      Every signature strengthens the movement.
-      Every name added to the record sends a message to governments, corporations, and institutions worldwide:
-    </p>
+    <p class="section-text">Every signature strengthens the movement. Every name added to the record sends a message to governments, corporations, and institutions worldwide:</p>
     <div class="callout">
       <strong>Humanity is awake. Humanity is organized. Humanity will not be excluded from the future it helped create.</strong>
     </div>
     <div class="hero-actions" style="margin-top:1.5rem;">
-      <a href="press.html" class="btn btn-ghost">View Press</a>
-      <a href="faq.html" class="btn btn-primary">Read the FAQ</a>
+      <a href="signatures.html" class="btn btn-primary">View All Signatures</a>
+      <a href="faq.html" class="btn btn-ghost">Read the FAQ</a>
     </div>
   </section>
 
@@ -106,8 +96,51 @@
       <a href="faq.html">FAQ</a>
     </div>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </footer>
 
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('signatureForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type=submit]');
+    const statusDiv = document.getElementById('formStatus');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    fetch('process-signature.php', {
+      method: 'POST',
+      body: new FormData(this)
+    })
+    .then(r => r.json())
+    .then(data => {
+      statusDiv.style.display = 'block';
+      if (data.success) {
+        statusDiv.style.background = 'rgba(0,246,255,0.08)';
+        statusDiv.style.borderColor = 'var(--teal)';
+        statusDiv.style.color = '#005a5a';
+        statusDiv.textContent = '✓ Thank you! Your signature has been recorded. You are now part of the global record.';
+        this.reset();
+        setTimeout(() => { window.location.href = 'signatures.html'; }, 2200);
+      } else {
+        statusDiv.style.background = 'rgba(255,80,80,0.08)';
+        statusDiv.style.borderColor = '#c05050';
+        statusDiv.style.color = '#8b0000';
+        statusDiv.textContent = 'Error: ' + (data.message || 'Unable to record signature. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Add My Signature';
+      }
+    })
+    .catch(() => {
+      statusDiv.style.display = 'block';
+      statusDiv.style.background = 'rgba(255,80,80,0.08)';
+      statusDiv.style.borderColor = '#c05050';
+      statusDiv.style.color = '#8b0000';
+      statusDiv.textContent = 'Connection error. Please check your internet and try again.';
+      btn.disabled = false;
+      btn.textContent = 'Add My Signature';
+    });
+  });
+</script>
 </body>
 </html>
